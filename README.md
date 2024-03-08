@@ -4,7 +4,7 @@ This project is based on "https://github.com/nicknochnack/Llama2RAG/tree/main"
 
 # How-to
 
-1. Create your own conda env with python-3.10
+1. Create your own conda env with python=3.10 and activate it
 2. Run the setup.sh
 ```bash
 bash ./setup.sh
