@@ -1,4 +1,4 @@
-# rag-reference
+# RAG (Retrieval Augmented Generation) - short example project
 
 This project is based on "https://github.com/nicknochnack/Llama2RAG/tree/main"
 
