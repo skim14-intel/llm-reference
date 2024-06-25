@@ -1,13 +1,13 @@
 ''' 
 1. Please login huggingface before run this script
-2. For IPEX usage, you need to set oneAPI variables.
+2. For Intel GPU, you need to set oneAPI variables.
 3. Set your huggingface home dir as HF_HOME
 '''
 # Import transformer classes for generation
 from transformers import AutoTokenizer, AutoModelForCausalLM, TextStreamer
 # Import torch for datatype attributes 
 import torch
-import intel_extension_for_pytorch as ipex
+#import intel_extension_for_pytorch as ipex
 import os
 
 #print(ipex.xpu.get_device_name(0))
