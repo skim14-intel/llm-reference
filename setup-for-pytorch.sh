@@ -7,7 +7,7 @@ python -m pip install llama_hub==0.0.19
 
 python -m pip install transformers
 python -m pip install sentence_transformers
-python -m pip installl sentencepiece==0.2.0
-python -m pip installl protobuf
+python -m pip install sentencepiece==0.2.0
+python -m pip install protobuf
 
 
