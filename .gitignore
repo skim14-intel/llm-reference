@@ -162,3 +162,6 @@ cython_debug/
 *.json
 *.txt
 *.out
+
+log/
+r00**/
