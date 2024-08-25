@@ -3,6 +3,7 @@ import time
 import torch
 import json
 from transformers import AutoModelForCausalLM, AutoTokenizer
+from line_profiler import profile
 
 class TextGenerator:
     def __init__(self, model_name, device='cpu'):
@@ -29,7 +30,7 @@ class TextGenerator:
         if self.tokenizer.pad_token is None:
             self.tokenizer.pad_token = self.tokenizer.eos_token
 
-        self.model = AutoModelForCausalLM.from_pretrained(self.model_name)
+        self.model = AutoModelForCausalLM.from_pretrained(self.model_name,ignore_mismatched_sizes=True, trust_remote_code=True )
         self.model.to(self.device, dtype=torch.bfloat16)
 
 #    @profile
@@ -47,6 +48,7 @@ class TextGenerator:
         # Generate text for the remaining tokens
         start_time = time.time()
         output = self.model.generate(input_ids, attention_mask=attention_mask, max_new_tokens=self.max_output_tokens)
+        # torch.xpu.synchronize()
         throughput_time = (time.time() - start_time) / (self.max_output_tokens * len(input_texts))
         throughput_token = (1 * self.batch_size)/ throughput_time
 
@@ -60,18 +62,21 @@ class TextGenerator:
             "generated_texts": generated_texts
         }
     
-#@profile
+@profile
 def run_llm():
 # Usage
-    #model_name = "meta-llama/Llama-2-7b-chat-hf"  # or 
-    model_name = "meta-llama/Meta-Llama-3-8B-Instruct"
+    # model_name = "meta-llama/Llama-2-7b-chat-hf"  # or 
+    # model_name = "meta-llama/Meta-Llama-3-70B-Instruct"
+    #model_name = "microsoft/Phi-3.5-MoE-instruct"
+    model_name = "mistralai/Mistral-7B-Instruct-v0.3"
     device = "xpu"
+    #device = "cpu"
     text_generator = TextGenerator(model_name, device)
 
     #input_text = ["Once upon a time"] * text_generator.batch_size
     current_path = os.path.dirname(__file__)
-    with open(str(current_path) + "/prompt.json") as f:
-    #with open("/home/seankim/workspace/rag-reference" + "/prompt.json") as f:
+    #with open(str(current_path) + "/prompt.json") as f:
+    with open("/home/seankim/workspace/llm-reference" + "/prompt.json") as f:
         prompt_pool = json.load(f)
     prompt = prompt_pool[text_generator.input_token]
 
